@@ -1,0 +1,26 @@
+<style>
+.delIcon{
+width: 22px;
+height: 22px;
+background: url('images/clear-icons.png') no-repeat;
+background-position-x: -760;
+background-position-y: -760;
+background-size: 784px 983px;
+cursor: pointer;
+}
+.container{
+display: table-row;
+height: 30px;
+width: 160px;
+
+border-radius: 4px 4px 4px 4px;
+-moz-border-radius: 4px 4px 4px 4px;
+-webkit-border-radius: 4px 4px 4px 4px;
+border: 1px dashed gray;
+}
+.item{
+float: left;
+overflow: hidden;
+display: table-cell;
+}
+</style>
