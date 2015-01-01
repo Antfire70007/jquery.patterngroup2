@@ -27,8 +27,7 @@
 
 	function createContainer() {
 		var container = $('<div>');
-		container.attr('class', 'container');
-		container.attr('data-role', 'Container');
+		container.addClass('container').attr('data-role', 'Container');
 		var idx = 0;
 		var lastItem = $('div[data-role="Container"]').last();
 		if (lastItem && typeof lastItem.attr('data-idx') != 'undefined') {
