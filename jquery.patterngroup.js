@@ -37,10 +37,7 @@
 			}
 		}
 		container.attr('data-idx', idx);
-		itemArray.push({
-			idx : idx,
-			item : container
-		});
+
 		return container;
 	}
 
@@ -66,24 +63,31 @@
 		currentIndex++;
 		removeBtn.on('click', 'div', function () {
 			var idx = container.attr('data-idx');
+			console.log(idx);
 			_del(idx);
 		});
 		$(_container).trigger('added', {
 			item : $($(container[0]).children()[0]).children(),
 			index : idx
 		});
+		console.log(itemArray);	
+		itemArray.push({index:idx,item:$($(container[0]).children()[0]).children()});
+		$.fn.PatternGroup.params.items.push({index:idx,item:$($(container[0]).children()[0]).children()});
 		return container;
 	}
 	function _del(idx) {
 
-		for (var i in itemArray) {
-			if (itemArray[i].idx == idx) {
-				itemArray[i].item.remove();
-				itemArray.splice(i, 1);
+		
+		for (var i in $.fn.PatternGroup.params.items) {
+			if ($.fn.PatternGroup.params.items[i].index == idx) {
+				console.log($.fn.PatternGroup.params.items[i].item.parents('.container'));
+				$.fn.PatternGroup.params.items[i].item.parents('.container').remove();
+				$.fn.PatternGroup.params.items.splice(i, 1);
 				return;
 			}
 		}
 	}
+	
 	var _settings = {};
 	$.fn.PatternGroup = function () {
 		var args = arguments;
@@ -91,7 +95,10 @@
 			pattern : '<div><input type="text"/></div>',
 			target : '',
 			index : -1,
-			showCloseButton : true
+			initLength:1,
+			maxLength:10,
+			showCloseButton : true,
+			getData:function(){return $.fn.PatternGroup.params.items;}
 		}
 		var options = {};
 		if (args.length == 0) {
@@ -103,19 +110,39 @@
 		}
 		return this.each(function () {
 			_container = this;
+		
 			if (typeof args[0] === 'string') {
 				if (args[0] == 'add') {
 					$(this).bind('added', function () {
 						return false;
 					});
-					var item = _add(_settings);
+					//var item = _add(_settings);
+					return _add(_settings);
 				}
 				if (args[0] == 'delete') {
 					if (!isNaN(parseInt(args[1]))) {
 						_del(parseInt(args[1]));
 					}
 				}
+				if(args[0]=='getdata')
+				{
+					return $.fn.PatternGroup.params.items;
+				}
+			}
+			else
+			{
+			//	console.log(options);
+				if(options.initLength>0)
+				{
+					for(var i = 0;i<_settings.initLength&&_settings.initLength<=_settings.maxLength;i++)
+					{
+						_add(_settings);
+					}
+				}
 			}
 		});
 	}
+	$.fn.PatternGroup.params = {
+		items:[]
+		};
 })(jQuery);
